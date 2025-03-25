@@ -107,11 +107,14 @@ function Homepage() {
       status: taskStatus,
     };
 
+    const token = localStorage.getItem("authToken"); // Retrieve the token
+
     try {
       const response = await fetch("http://localhost:8000/api/tasks/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use the token
         },
         body: JSON.stringify(taskData),
       });
@@ -233,11 +236,16 @@ function Homepage() {
     setFormat((prev) => ({ ...prev, [type]: !prev[type] }));
   };
 
+  const handleAvatarClick = () => {
+    navigate("/profile", { state: { user } });
+  };
+
   const handleLogout = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
         console.log("User signed out");
+        localStorage.clear();
         toast.success("User signed out successfully!");
         navigate("/");
       })
@@ -463,7 +471,13 @@ function Homepage() {
         </div>
         <div className="flex flex-col items-center">
           <div className="flex items-center mb-2">
-            <Avatar alt="User" src={user?.avatarUrl || ""} className="mr-2">
+            <Avatar
+              alt="User"
+              src={user?.avatarUrl || ""}
+              className="mr-2"
+              onClick={handleAvatarClick} // Add this line
+              style={{ cursor: "pointer" }}
+            >
               {!user?.avatarUrl && user?.name?.charAt(0)}
             </Avatar>
             {user && (

@@ -13,10 +13,8 @@ function Login() {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      // Get the Firebase ID token
       const token = await result.user.getIdToken();
 
-      // Send token to the backend for authentication
       const response = await fetch(
         "http://localhost:8000/api/auth/authenticate",
         {
@@ -32,8 +30,10 @@ function Login() {
       if (response.ok) {
         console.log("User authenticated:", data.user);
         setUser(data.user);
-        localStorage.setItem("isLoggedIn", "true"); // Store login status
-        navigate("/home", { state: { user: data.user } }); // Pass user info to homepage
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("authToken", token); // Store the token
+        console.log("Navigating to home...");
+        navigate("/home", { state: { user: data.user } });
       } else {
         console.error("Authentication failed:", data.message);
       }
