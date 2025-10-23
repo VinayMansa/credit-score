@@ -82,7 +82,7 @@ function Homepage() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/tasks/get");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tasks/get`);
         if (response.ok) {
           const data = await response.json();
           setTasks(data);
@@ -110,7 +110,7 @@ function Homepage() {
     const token = localStorage.getItem("authToken"); // Retrieve the token
 
     try {
-      const response = await fetch("http://localhost:8000/api/tasks/create", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tasks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ function Homepage() {
         setDueDate("");
         setTaskStatus("");
         // Refresh tasks after creation
-        const updatedTasks = await fetch("http://localhost:8000/api/tasks/get");
+        const updatedTasks = await fetch(`${process.env.REACT_APP_API_URL}/api/tasks/get`);
         if (updatedTasks.ok) {
           const data = await updatedTasks.json();
           setTasks(data);
@@ -165,7 +165,7 @@ function Homepage() {
 
       try {
         const response = await fetch(
-          `http://localhost:8000/api/tasks/update/${currentTask._id}`,
+          `${process.env.REACT_APP_API_URL}/api/tasks/update/${currentTask._id}`,
           {
             method: "PUT",
             headers: {
@@ -181,7 +181,7 @@ function Homepage() {
           setCurrentTask(null);
           // Refresh tasks after update
           const updatedTasks = await fetch(
-            "http://localhost:8000/api/tasks/get"
+            `${process.env.REACT_APP_API_URL}/api/tasks/get`
           );
           if (updatedTasks.ok) {
             const data = await updatedTasks.json();
@@ -204,7 +204,7 @@ function Homepage() {
     if (taskToDelete) {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/tasks/delete/${taskToDelete._id}`,
+          `${process.env.REACT_APP_API_URL}/api/tasks/delete/${taskToDelete._id}`,
           {
             method: "DELETE",
           }
@@ -216,7 +216,7 @@ function Homepage() {
           setTaskToDelete(null);
           // Refresh tasks after deletion
           const updatedTasks = await fetch(
-            "http://localhost:8000/api/tasks/get"
+            `${process.env.REACT_APP_API_URL}/api/tasks/get`
           );
           if (updatedTasks.ok) {
             const data = await updatedTasks.json();

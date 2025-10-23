@@ -16,7 +16,7 @@ function Login() {
       const token = await result.user.getIdToken();
 
       const response = await fetch(
-        "http://localhost:8000/api/auth/authenticate",
+        `${process.env.REACT_APP_API_URL}/api/auth/authenticate`,
         {
           method: "POST",
           headers: {
